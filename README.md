@@ -15,6 +15,7 @@ This project is meant to be built gradually, one small feature at a time. Each s
 ## Current features
 
 - Add a new task
+- Mark a task as completed
 - Delete a task
 - See tasks appear in the list
 
