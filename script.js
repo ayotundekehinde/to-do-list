@@ -13,8 +13,11 @@ function renderTasks() {
   list.innerHTML = tasks
     .map(
       (task, index) => `
-        <li class="todo-item">
-          <span>${index + 1}. ${task}</span>
+        <li class="todo-item${task.completed ? ' completed' : ''}">
+          <label class="task-label">
+            <input type="checkbox" class="complete-checkbox" data-index="${index}" ${task.completed ? 'checked' : ''} />
+            <span class="task-text">${index + 1}. ${task.text}</span>
+          </label>
           <button type="button" data-index="${index}" class="delete-btn">Delete</button>
         </li>
       `
@@ -29,7 +32,7 @@ function addTask(text) {
     return;
   }
 
-  tasks.push(cleanText);
+  tasks.push({ text: cleanText, completed: false });
   renderTasks();
   form.reset();
   input.focus();
@@ -38,6 +41,18 @@ function addTask(text) {
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   addTask(input.value);
+});
+
+list.addEventListener('change', (event) => {
+  const checkbox = event.target.closest('.complete-checkbox');
+
+  if (!checkbox) {
+    return;
+  }
+
+  const index = Number(checkbox.dataset.index);
+  tasks[index].completed = checkbox.checked;
+  renderTasks();
 });
 
 list.addEventListener('click', (event) => {
